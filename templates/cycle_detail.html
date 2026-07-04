@@ -1,0 +1,45 @@
+<!-- templates/cycle_detail.html -->
+<!-- Shows one archived cycle's full grid — read only, no toggling, no editing.
+     Dates shown are that cycle's own real dates, not today's. -->
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if cycle %}
+        <div class="card">
+            <h1>{{ cycle.name }}</h1>
+            <p>{{ cycle.start_date }} to {{ cycle.end_date }}</p>
+            <a href="{{ url_for('delete_saved_cycle', cycle_id=cycle.id) }}" class="btn btn-danger">Delete This Cycle</a>
+        </div>
+
+        <table class="goal-table">
+            <tr>
+                <th>Goal</th>
+                {% for d in dates %}
+                    <th>{{ d }}</th>
+                {% endfor %}
+            </tr>
+
+            {% for goal in cycle.goals %}
+            <tr>
+                <td>{{ goal.name }}</td>
+                {% for day_value in goal.days %}
+                    <td>
+                        <span class="day-toggle {% if day_value %}is-checked{% endif %}"></span>
+                    </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+
+        <br>
+        <a href="{{ url_for('saved') }}" class="btn">Back to Saved Cycles</a>
+
+    {% else %}
+        <div class="card">
+            <p>Cycle not found.</p>
+            <a href="{{ url_for('saved') }}" class="btn">Back to Saved Cycles</a>
+        </div>
+    {% endif %}
+
+{% endblock %}

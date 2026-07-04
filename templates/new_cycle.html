@@ -1,0 +1,31 @@
+<!-- templates/new_cycle.html -->
+<!-- Form to start a brand new cycle: pick a name, start date, and end date.
+     Shown when there's no cycle currently running, or when you
+     manually choose to start the next one. -->
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Start a New Cycle</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form action="{{ url_for('new_cycle') }}" method="post">
+        <p>
+            <label for="name">Cycle name:</label><br>
+            <input type="text" id="name" name="name" placeholder="e.g. Summer Reading Push" required>
+        </p>
+        <p>
+            <label for="start_date">Start date:</label><br>
+            <input type="date" id="start_date" name="start_date" required>
+        </p>
+        <p>
+            <label for="end_date">End date:</label><br>
+            <input type="date" id="end_date" name="end_date" required>
+        </p>
+        <button type="submit">Start Cycle</button>
+    </form>
+
+{% endblock %}

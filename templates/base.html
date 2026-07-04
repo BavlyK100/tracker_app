@@ -1,0 +1,28 @@
+<!-- templates/base.html -->
+<!-- Shared layout for all pages. Uses semantic HTML5 landmarks
+     (header/nav/main) and consistent class names (btn, card, etc.)
+     so the CSS pass later can target things cleanly. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10-Day Goal Tracker</title>
+    <!-- CSS link goes here once we start the styling pass -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="main-nav">
+            <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+            <a href="{{ url_for('saved') }}" class="nav-link">Saved Cycles</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

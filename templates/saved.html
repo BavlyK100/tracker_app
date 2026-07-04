@@ -1,0 +1,24 @@
+<!-- templates/saved.html -->
+<!-- Lists every archived cycle from saved_cycles.json as a card,
+     each linking to its detail page (by name) with a delete option. -->
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Saved Cycles</h1>
+
+    {% if saved_cycles %}
+        {% for cycle in saved_cycles %}
+            <div class="card">
+                <a href="{{ url_for('cycle_detail', cycle_id=cycle.id) }}">
+                    <strong>{{ cycle.name }}</strong>
+                </a>
+                <p>{{ cycle.start_date }} to {{ cycle.end_date }}</p>
+                <a href="{{ url_for('delete_saved_cycle', cycle_id=cycle.id) }}" class="btn btn-danger">Delete</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No saved cycles yet. End a cycle from the Dashboard to archive it here.</p>
+    {% endif %}
+
+{% endblock %}

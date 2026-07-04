@@ -1,0 +1,108 @@
+<!-- templates/dashboard.html -->
+<!-- Shows the current cycle if one exists: one row per goal, one column per real date,
+     with per-goal progress + streaks and overall progress. If no cycle is active,
+     shows a start-cycle prompt. A single global "Edit" toggle (hidden checkbox +
+     label, no JS) reveals the Actions column for every row at once. -->
+{% extends "base.html" %}
+
+{% block content %}
+
+    <!-- Hidden checkbox drives the global Edit toggle via CSS only -->
+    <input type="checkbox" id="edit-toggle" class="edit-toggle-input">
+
+    {% if cycle %}
+        <div class="card">
+            <h1>{{ cycle.name }}</h1>
+            <p>{{ cycle.start_date }} to {{ cycle.end_date }}</p>
+
+            <!-- Overall cycle progress -->
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: {{ cycle_percent }}%;"></div>
+            </div>
+            <span class="badge badge-accent">{{ cycle_percent }}% complete</span>
+            <label for="edit-toggle" class="btn edit-btn">Edit</label>
+        </div>
+
+        {% if cycle.goals %}
+            <div class="table-scroll">
+            <table class="goal-table">
+                <tr>
+                    <th>Goal</th>
+                    {% for d in dates %}
+                        <th>{{ d }}</th>
+                    {% endfor %}
+                    <th>Progress</th>
+                    <th>Streak</th>
+                    <th class="actions-col">Actions</th>
+                </tr>
+
+                {% for goal in cycle.goals %}
+                <tr>
+                    <td>{{ goal.name }}</td>
+                    {% for day_value in goal.days %}
+                        <td>
+                            <a href="{{ url_for('toggle', goal_id=goal.id, day_index=loop.index0) }}"
+                               class="day-toggle {% if day_value %}is-checked{% endif %}"></a>
+                        </td>
+                    {% endfor %}
+                    <td>
+                        <span class="badge">
+                            {{ goal_progress[goal.id].checked }}/{{ goal_progress[goal.id].total }}
+                            ({{ goal_progress[goal.id].percent }}%)
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge badge-fire">
+                            🔥 {{ goal_progress[goal.id].current_streak }}
+                        </span>
+                        <br>
+                        <small>best: {{ goal_progress[goal.id].longest_streak }}</small>
+                    </td>
+                    <td class="actions-col">
+                        <!-- Reorder -->
+                        {% if not loop.first %}
+                            <a href="{{ url_for('move_goal_up', goal_id=goal.id) }}" class="btn" title="Move up">▲</a>
+                        {% endif %}
+                        {% if not loop.last %}
+                            <a href="{{ url_for('move_goal_down', goal_id=goal.id) }}" class="btn" title="Move down">▼</a>
+                        {% endif %}
+
+                        <!-- Rename -->
+                        <form action="{{ url_for('rename_goal', goal_id=goal.id) }}" method="post">
+                            <input type="text" name="new_name" value="{{ goal.name }}" size="10">
+                            <button type="submit" class="btn" title="Rename">✏️</button>
+                        </form>
+
+                        <!-- Delete -->
+                        <a href="{{ url_for('delete_goal', goal_id=goal.id) }}" class="btn btn-danger" title="Delete">🗑️</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+        {% else %}
+            <p>No goals yet. Add your first goal below to start this cycle.</p>
+        {% endif %}
+
+        <!-- Add Goal form -->
+        <div class="card">
+            <h3>Add a Goal</h3>
+            <form action="{{ url_for('add_goal') }}" method="post">
+                <input type="text" name="goal_name" placeholder="e.g. Read" required>
+                <button type="submit" class="btn">Add Goal</button>
+            </form>
+        </div>
+
+        <!-- Cycle-level actions -->
+        <a href="{{ url_for('end_cycle') }}" class="btn btn-danger">End Cycle (Archive)</a>
+        <a href="{{ url_for('cancel_cycle') }}" class="btn">Cancel Cycle (Discard)</a>
+
+    {% else %}
+        <div class="card">
+            <h1>No Cycle Running</h1>
+            <p>Start a new cycle to begin tracking goals.</p>
+            <a href="{{ url_for('new_cycle') }}" class="btn">Start New Cycle</a>
+        </div>
+    {% endif %}
+
+{% endblock %}

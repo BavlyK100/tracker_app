@@ -1,0 +1,367 @@
+/* static/css/style.css */
+/* Dark dashboard theme: deep navy background, glowing teal + purple accents,
+   an orange-to-pink gradient reserved for standout elements. */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+    --bg: #10122A;
+    --card: #1A1D3E;
+    --card-alt: #20234A;
+    --border: rgba(255, 255, 255, 0.08);
+    --ink: #F5F6FB;
+    --ink-soft: #9296B8;
+    --teal: #2FE0C0;
+    --purple: #7C5CFC;
+    --pink: #FF4D8D;
+    --orange: #FF8B4C;
+    --radius: 10px;
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+h1, h2, h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    margin: 0 0 0.4em;
+    color: var(--ink);
+}
+
+h1 { font-size: 1.9rem; }
+h3 { font-size: 1.1rem; }
+
+a { color: var(--teal); text-decoration: none; }
+
+/* ---------- Layout ---------- */
+
+.site-header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+}
+
+.main-nav {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.nav-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+    color: var(--teal);
+    border-color: var(--teal);
+}
+
+.page {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+}
+
+.card p {
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--teal);
+    background: var(--card-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin: 2px 4px 2px 0;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn:hover,
+.btn:focus-visible {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #10122A;
+    outline: none;
+}
+
+.btn-danger {
+    color: var(--pink);
+}
+
+.btn-danger:hover,
+.btn-danger:focus-visible {
+    background: var(--pink);
+    border-color: var(--pink);
+    color: #fff;
+}
+
+/* ---------- Forms ---------- */
+
+input[type="text"],
+input[type="date"] {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-alt);
+    color: var(--ink);
+    max-width: 100%;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+    outline: 2px solid var(--purple);
+    outline-offset: 1px;
+}
+
+label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.76rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+button[type="submit"] {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+}
+
+button[type="submit"]:hover,
+button[type="submit"]:focus-visible {
+    opacity: 0.88;
+}
+
+/* ---------- Goal table (dark ledger grid, centered content, fills width) ---------- */
+
+.table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+}
+
+.goal-table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+    background: var(--card);
+}
+
+.goal-table tr { border-bottom: 1px solid var(--border); }
+.goal-table tr:last-child { border-bottom: none; }
+
+.goal-table th,
+.goal-table td {
+    padding: 10px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.goal-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--card-alt);
+    border-bottom: 1px solid var(--border);
+}
+
+.goal-table td:first-child,
+.goal-table th:first-child {
+    font-weight: 500;
+    position: sticky;
+    left: 0;
+    background: var(--card);
+}
+
+/* Checkbox cells: teal fill when checked */
+.day-toggle {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    background: var(--card-alt);
+    position: relative;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+a.day-toggle:hover,
+a.day-toggle:focus-visible {
+    border-color: var(--teal);
+    transform: scale(1.06);
+    outline: none;
+}
+
+.day-toggle.is-checked {
+    background: var(--teal);
+    border-color: var(--teal);
+}
+
+.day-toggle.is-checked::after {
+    content: "✓";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #10122A;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* ---------- Badges + progress ---------- */
+
+.badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink);
+    background: var(--card-alt);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px 10px;
+}
+
+.badge-fire {
+    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--orange), var(--pink));
+}
+
+.badge-accent {
+    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--orange), var(--pink));
+    font-size: 0.85rem;
+    padding: 4px 14px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--card-alt);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 6px 0 8px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--purple);
+    border-radius: 999px;
+    transition: width 0.2s ease;
+}
+
+/* ---------- Global Edit toggle (checkbox hack, no JS) ---------- */
+/* A hidden checkbox + label controls one Actions column for the WHOLE
+   table at once. Icons/forms inside are inline-flex so they sit in a row. */
+
+.edit-toggle-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.actions-col {
+    display: none;
+}
+
+.edit-toggle-input:checked ~ .table-scroll .actions-col {
+    display: table-cell;
+}
+
+.actions-col a,
+.actions-col form {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.actions-col form {
+    gap: 4px;
+}
+
+.edit-btn {
+    margin-left: 8px;
+}
+
+/* ---------- Small text ---------- */
+
+small {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 700px) {
+    .page { padding: 24px 16px 48px; }
+    .card { padding: 16px; }
+    h1 { font-size: 1.5rem; }
+    .main-nav { padding: 14px 16px; gap: 14px; }
+}
+
+@media (max-width: 480px) {
+    .day-toggle { width: 22px; height: 22px; }
+    .goal-table th, .goal-table td { padding: 8px 8px; font-size: 0.85rem; }
+    input[type="text"], input[type="date"] { width: 100%; }
+    .btn, button[type="submit"] { width: 100%; margin: 4px 0; text-align: center; }
+}
