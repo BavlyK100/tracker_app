@@ -436,3 +436,37 @@ small {
     input[type="text"], input[type="date"] { width: 100%; }
     .btn, button[type="submit"] { width: 100%; margin: 4px 0; text-align: center; }
 }
+/* ---------- Footer ---------- */
+
+.site-footer {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 24px 24px 40px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+}
+
+.footer-name {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    margin: 18px 0 10px;
+}
+
+.footer-icons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.footer-icons a {
+    color: var(--ink-soft);
+    display: inline-flex;
+    transition: color 0.15s, transform 0.1s;
+}
+
+.footer-icons a:hover,
+.footer-icons a:focus-visible {
+    color: var(--teal);
+    transform: translateY(-2px);
+}
