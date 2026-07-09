@@ -19,6 +19,23 @@
     --shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
+.card,
+.btn,
+.site-header,
+.badge,
+.goal-table,
+.goal-table th,
+.goal-table td:first-child,
+.goal-table th:first-child,
+input[type="text"],
+input[type="date"],
+.day-toggle,
+.progress-bar,
+.popup-box,
+.site-footer {
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
 * { box-sizing: border-box; }
 
 body {
@@ -28,6 +45,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     line-height: 1.5;
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 h1, h2, h3 {
@@ -54,6 +72,12 @@ a { color: var(--teal); text-decoration: none; }
     margin: 0 auto;
     padding: 18px 24px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
@@ -75,10 +99,58 @@ a { color: var(--teal); text-decoration: none; }
     border-color: var(--teal);
 }
 
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    color: var(--ink-soft);
+    border: 1px solid var(--border);
+    background: var(--card-alt);
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+    color: var(--teal);
+    border-color: var(--teal);
+    transform: rotate(15deg);
+    outline: none;
+}
+
 .page {
     max-width: 920px;
     margin: 0 auto;
     padding: 32px 24px 64px;
+}
+
+/* ---------- Light theme override ---------- */
+
+body.light-theme {
+    --bg: #E4E5F1;
+    --card: #F1F2FA;
+    --card-alt: #DFE0EE;
+    --border: rgba(28, 24, 74, 0.14);
+    --ink: #191B38;
+    --ink-soft: #5C5F82;
+}
+
+body.light-theme .day-toggle.is-checked::after {
+    color: #FFFFFF;
+}
+
+body.light-theme input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: none;
+}
+
+body.light-theme .site-header {
+    box-shadow: 0 1px 0 rgba(28, 24, 74, 0.06);
+}
+
+body.light-theme .card {
+    box-shadow: 0 2px 10px rgba(28, 24, 74, 0.06);
 }
 
 /* ---------- Cards ---------- */

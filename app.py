@@ -1,7 +1,7 @@
 # app.py
 # Main Flask application for the 10-Day Goal Tracker.
 
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, make_response
 import json
 import os
 from datetime import date, timedelta
@@ -14,6 +14,13 @@ DATA_DIR = "data"
 CURRENT_CYCLE_FILE = os.path.join(DATA_DIR, "current_cycle.json")
 SAVED_CYCLES_FILE = os.path.join(DATA_DIR, "saved_cycles.json")
 
+
+@app.context_processor
+def inject_theme():
+    """Makes `theme` available in every template automatically,
+    so we don't have to pass it manually in each render_template() call."""
+    theme = request.cookies.get("theme", "dark")
+    return {"theme": theme}
 
 def load_json(filepath):
     """Read and return JSON data from a file."""
@@ -313,6 +320,18 @@ def cancel_cycle():
     # starts or test cycles you don't want cluttering saved_cycles.json
     save_json(CURRENT_CYCLE_FILE, {})
     return redirect(url_for("dashboard"))
+
+@app.route("/toggle_theme")
+def toggle_theme():
+    # Flip whatever theme is currently set, remember it in a cookie,
+    # then bounce back to whatever page the user was on.
+    current = request.cookies.get("theme", "dark")
+    new_theme = "light" if current == "dark" else "dark"
+
+    # request.referrer = the page the user clicked the toggle from
+    response = make_response(redirect(request.referrer or url_for("dashboard")))
+    response.set_cookie("theme", new_theme, max_age=60 * 60 * 24 * 365)  # remember for 1 year
+    return response
 
 @app.route("/export_pdf/<cycle_id>")
 def export_pdf(cycle_id):
