@@ -1,8 +1,4 @@
 <!-- templates/dashboard.html -->
-<!-- Shows the current cycle if one exists: one row per goal, one column per real date,
-     with per-goal progress + streaks and overall progress. If no cycle is active,
-     shows a start-cycle prompt. A single global "Edit" toggle (hidden checkbox +
-     label, no JS) reveals the Actions column for every row at once. -->
 {% extends "base.html" %}
 
 {% block content %}
@@ -59,7 +55,6 @@
                         <small>best: {{ goal_progress[goal.id].longest_streak }}</small>
                     </td>
                     <td class="actions-col">
-                        <!-- Reorder -->
                         {% if not loop.first %}
                             <a href="{{ url_for('move_goal_up', goal_id=goal.id) }}" class="btn" title="Move up">▲</a>
                         {% endif %}
@@ -67,13 +62,11 @@
                             <a href="{{ url_for('move_goal_down', goal_id=goal.id) }}" class="btn" title="Move down">▼</a>
                         {% endif %}
 
-                        <!-- Rename -->
                         <form action="{{ url_for('rename_goal', goal_id=goal.id) }}" method="post">
                             <input type="text" name="new_name" value="{{ goal.name }}" size="10">
                             <button type="submit" class="btn" title="Rename">✏️</button>
                         </form>
 
-                        <!-- Delete -->
                         <a href="{{ url_for('delete_goal', goal_id=goal.id) }}" class="btn btn-danger" title="Delete">🗑️</a>
                     </td>
                 </tr>
@@ -93,9 +86,31 @@
             </form>
         </div>
 
-        <!-- Cycle-level actions -->
-        <a href="{{ url_for('end_cycle') }}" class="btn btn-danger">End Cycle (Archive)</a>
-        <a href="{{ url_for('cancel_cycle') }}" class="btn">Cancel Cycle (Discard)</a>
+        <!-- End Cycle popup -->
+        <input type="checkbox" id="end-cycle-popup" class="popup-toggle-input">
+        <div class="popup-overlay">
+            <div class="popup-box">
+                <p>Archive this cycle? You won't be able to edit it after.</p>
+                <div class="popup-actions">
+                    <a href="{{ url_for('end_cycle') }}" class="btn btn-danger">Continue</a>
+                    <label for="end-cycle-popup" class="btn">Cancel</label>
+                </div>
+            </div>
+        </div>
+        <label for="end-cycle-popup" class="btn btn-danger">End Cycle (Archive)</label>
+
+        <!-- Cancel Cycle popup -->
+        <input type="checkbox" id="cancel-cycle-popup" class="popup-toggle-input">
+        <div class="popup-overlay">
+            <div class="popup-box">
+                <p>This cycle will be permanently deleted and cannot be recovered.</p>
+                <div class="popup-actions">
+                    <a href="{{ url_for('cancel_cycle') }}" class="btn btn-danger">Continue Deletion</a>
+                    <label for="cancel-cycle-popup" class="btn">Cancel</label>
+                </div>
+            </div>
+        </div>
+        <label for="cancel-cycle-popup" class="btn">Cancel Cycle (Discard)</label>
 
     {% else %}
         <div class="card">

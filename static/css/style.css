@@ -342,6 +342,50 @@ a.day-toggle:focus-visible {
     margin-left: 8px;
 }
 
+/* ---------- Confirm Popup (checkbox hack, no JS) ---------- */
+.popup-toggle-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.popup-toggle-input:checked + .popup-overlay {
+    display: flex;
+}
+
+.popup-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    max-width: 320px;
+    text-align: center;
+}
+
+.popup-box p {
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+}
+
+.popup-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
 /* ---------- Small text ---------- */
 
 small {

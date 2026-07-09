@@ -1,6 +1,4 @@
 <!-- templates/saved.html -->
-<!-- Lists every archived cycle from saved_cycles.json as a card,
-     each linking to its detail page (by name) with a delete option. -->
 {% extends "base.html" %}
 
 {% block content %}
@@ -14,7 +12,19 @@
                     <strong>{{ cycle.name }}</strong>
                 </a>
                 <p>{{ cycle.start_date }} to {{ cycle.end_date }}</p>
-                <a href="{{ url_for('delete_saved_cycle', cycle_id=cycle.id) }}" class="btn btn-danger">Delete</a>
+
+                <!-- Delete popup (unique ID per cycle) -->
+                <input type="checkbox" id="delete-popup-{{ cycle.id }}" class="popup-toggle-input">
+                <div class="popup-overlay">
+                    <div class="popup-box">
+                        <p>This cycle will be permanently deleted and cannot be recovered.</p>
+                        <div class="popup-actions">
+                            <a href="{{ url_for('delete_saved_cycle', cycle_id=cycle.id) }}" class="btn btn-danger">Continue Deletion</a>
+                            <label for="delete-popup-{{ cycle.id }}" class="btn">Cancel</label>
+                        </div>
+                    </div>
+                </div>
+                <label for="delete-popup-{{ cycle.id }}" class="btn btn-danger">Delete</label>
             </div>
         {% endfor %}
     {% else %}

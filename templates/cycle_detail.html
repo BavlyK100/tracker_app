@@ -1,6 +1,4 @@
 <!-- templates/cycle_detail.html -->
-<!-- Shows one archived cycle's full grid — read only, no toggling, no editing.
-     Dates shown are that cycle's own real dates, not today's. -->
 {% extends "base.html" %}
 
 {% block content %}
@@ -9,7 +7,19 @@
         <div class="card">
             <h1>{{ cycle.name }}</h1>
             <p>{{ cycle.start_date }} to {{ cycle.end_date }}</p>
-            <a href="{{ url_for('delete_saved_cycle', cycle_id=cycle.id) }}" class="btn btn-danger">Delete This Cycle</a>
+
+            <!-- Delete popup -->
+            <input type="checkbox" id="delete-cycle-popup" class="popup-toggle-input">
+            <div class="popup-overlay">
+                <div class="popup-box">
+                    <p>This cycle will be permanently deleted and cannot be recovered.</p>
+                    <div class="popup-actions">
+                        <a href="{{ url_for('delete_saved_cycle', cycle_id=cycle.id) }}" class="btn btn-danger">Continue Deletion</a>
+                        <label for="delete-cycle-popup" class="btn">Cancel</label>
+                    </div>
+                </div>
+            </div>
+            <label for="delete-cycle-popup" class="btn btn-danger">Delete This Cycle</label>
         </div>
 
         <table class="goal-table">
