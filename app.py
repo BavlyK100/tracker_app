@@ -282,11 +282,19 @@ def delete_saved_cycle(cycle_id):
     return redirect(url_for("saved"))
 
 
-@app.route("/end_cycle")
+@app.route("/end_cycle", methods=["GET", "POST"])
 def end_cycle():
     # Archive the current cycle, then clear it -- used when a cycle is DONE
     cycle = load_json(CURRENT_CYCLE_FILE)
     cycle["id"] = cycle["name"]
+
+    # Reflection answers are optional -- store whatever was filled in,
+    # blank string if the user skipped a question
+    cycle["reflection"] = {
+        "achievement": request.form.get("achievement", "").strip(),
+        "improvement": request.form.get("improvement", "").strip(),
+        "lesson": request.form.get("lesson", "").strip(),
+    }
 
     saved_cycles = load_json(SAVED_CYCLES_FILE)
     saved_cycles.append(cycle)

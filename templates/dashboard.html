@@ -86,15 +86,26 @@
             </form>
         </div>
 
-        <!-- End Cycle popup -->
+        <!-- End Cycle popup (with optional reflection) -->
         <input type="checkbox" id="end-cycle-popup" class="popup-toggle-input">
         <div class="popup-overlay">
-            <div class="popup-box">
-                <p>Archive this cycle? You won't be able to edit it after.</p>
-                <div class="popup-actions">
-                    <a href="{{ url_for('end_cycle') }}" class="btn btn-danger">Continue</a>
-                    <label for="end-cycle-popup" class="btn">Cancel</label>
-                </div>
+            <div class="popup-box popup-box-wide">
+                <p>Archive this cycle? Feel free to reflect a bit -- totally optional.</p>
+                <form action="{{ url_for('end_cycle') }}" method="post">
+                    <label for="achievement">What made you proud this cycle?</label>
+                    <textarea id="achievement" name="achievement" rows="2"></textarea>
+
+                    <label for="improvement">What could've gone better?</label>
+                    <textarea id="improvement" name="improvement" rows="2"></textarea>
+
+                    <label for="lesson">Any lesson learned?</label>
+                    <textarea id="lesson" name="lesson" rows="2"></textarea>
+
+                    <div class="popup-actions">
+                        <button type="submit" class="btn btn-danger">Continue</button>
+                        <label for="end-cycle-popup" class="btn">Cancel</label>
+                    </div>
+                </form>
             </div>
         </div>
         <label for="end-cycle-popup" class="btn btn-danger">End Cycle (Archive)</label>

@@ -22,6 +22,22 @@
             <label for="delete-cycle-popup" class="btn btn-danger">Delete This Cycle</label>
         </div>
 
+        {% set reflection = cycle.get('reflection', {}) %}
+        {% if reflection.achievement or reflection.improvement or reflection.lesson %}
+            <div class="card">
+                <h3>Reflection</h3>
+                {% if reflection.achievement %}
+                    <p><strong>Proud of:</strong> {{ reflection.achievement }}</p>
+                {% endif %}
+                {% if reflection.improvement %}
+                    <p><strong>Could improve:</strong> {{ reflection.improvement }}</p>
+                {% endif %}
+                {% if reflection.lesson %}
+                    <p><strong>Lesson learned:</strong> {{ reflection.lesson }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
         <table class="goal-table">
             <tr>
                 <th>Goal</th>

@@ -380,6 +380,33 @@ a.day-toggle:focus-visible {
     margin-bottom: 16px;
 }
 
+.popup-box-wide {
+    max-width: 420px;
+    text-align: left;
+}
+
+.popup-box-wide label {
+    display: block;
+    margin: 10px 0 4px;
+}
+
+.popup-box-wide textarea {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-alt);
+    color: var(--ink);
+    resize: vertical;
+}
+
+.popup-box-wide textarea:focus {
+    outline: 2px solid var(--purple);
+    outline-offset: 1px;
+}
+
 .popup-actions {
     display: flex;
     gap: 8px;
