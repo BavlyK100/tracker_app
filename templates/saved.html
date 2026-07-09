@@ -13,7 +13,21 @@
                 </a>
                 <p>{{ cycle.start_date }} to {{ cycle.end_date }}</p>
 
-                <!-- Delete popup (unique ID per cycle) -->
+                <!-- Save as PDF popup -->
+                <input type="checkbox" id="pdf-popup-{{ cycle.id }}" class="popup-toggle-input">
+                <div class="popup-overlay">
+                    <div class="popup-box">
+                        <p>Include your reflection answers in the PDF?</p>
+                        <div class="popup-actions">
+                            <a href="{{ url_for('export_pdf', cycle_id=cycle.id, include_reflection='yes') }}" class="btn btn-danger">Include Reflection</a>
+                            <a href="{{ url_for('export_pdf', cycle_id=cycle.id, include_reflection='no') }}" class="btn">Goals Only</a>
+                            <label for="pdf-popup-{{ cycle.id }}" class="btn">Cancel</label>
+                        </div>
+                    </div>
+                </div>
+                <label for="pdf-popup-{{ cycle.id }}" class="btn">Save as PDF</label>
+
+                <!-- Delete popup -->
                 <input type="checkbox" id="delete-popup-{{ cycle.id }}" class="popup-toggle-input">
                 <div class="popup-overlay">
                     <div class="popup-box">

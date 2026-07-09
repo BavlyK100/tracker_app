@@ -5,6 +5,8 @@ from flask import Flask, render_template, redirect, url_for, request
 import json
 import os
 from datetime import date, timedelta
+from weasyprint import HTML
+from flask import Response
 
 app = Flask(__name__)
 
@@ -311,6 +313,46 @@ def cancel_cycle():
     # starts or test cycles you don't want cluttering saved_cycles.json
     save_json(CURRENT_CYCLE_FILE, {})
     return redirect(url_for("dashboard"))
+
+@app.route("/export_pdf/<cycle_id>")
+def export_pdf(cycle_id):
+    # Find the saved cycle, same lookup as cycle_detail
+    saved_cycles = load_json(SAVED_CYCLES_FILE)
+    cycle = None
+    for c in saved_cycles:
+        if c["id"] == cycle_id:
+            cycle = c
+            break
+
+    if not cycle:
+        return redirect(url_for("saved"))
+
+    dates = get_cycle_dates(cycle["start_date"], cycle["end_date"])
+
+    # ?include_reflection=yes or =no, chosen by the user in the popup
+    include_reflection = request.args.get("include_reflection", "no") == "yes"
+    reflection = cycle.get("reflection", {})
+
+    # Render the print-friendly template to an HTML string first
+    html_string = render_template(
+        "pdf_cycle.html",
+        cycle=cycle,
+        dates=dates,
+        show_reflection=include_reflection,
+        reflection=reflection,
+    )
+
+    # Convert that HTML string into PDF bytes
+    pdf_bytes = HTML(string=html_string).write_pdf()
+
+    # Send it back as a downloadable file, not displayed inline
+    return Response(
+        pdf_bytes,
+        mimetype="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="{cycle["name"]}.pdf"'
+        },
+    )
 
 
 if __name__ == "__main__":
