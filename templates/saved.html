@@ -19,7 +19,7 @@
                     <div class="popup-box">
                         <p>Include your reflection answers in the PDF?</p>
                         <div class="popup-actions">
-                            <a href="{{ url_for('export_pdf', cycle_id=cycle.id, include_reflection='yes') }}" class="btn btn-danger">Include Reflection</a>
+                            <a href="{{ url_for('export_pdf', cycle_id=cycle.id, include_reflection='yes') }}" class="btn btn-danger">Reflection & Notes</a>
                             <a href="{{ url_for('export_pdf', cycle_id=cycle.id, include_reflection='no') }}" class="btn">Goals Only</a>
                             <label for="pdf-popup-{{ cycle.id }}" class="btn">Cancel</label>
                         </div>

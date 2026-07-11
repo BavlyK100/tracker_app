@@ -5,6 +5,7 @@
 
     <!-- Hidden checkbox drives the global Edit toggle via CSS only -->
     <input type="checkbox" id="edit-toggle" class="edit-toggle-input">
+    <input type="checkbox" id="notes-toggle" class="notes-toggle-input">
 
     {% if cycle %}
         <div class="card">
@@ -17,6 +18,7 @@
             </div>
             <span class="badge badge-accent">{{ cycle_percent }}% complete</span>
             <label for="edit-toggle" class="btn edit-btn">Edit</label>
+            <label for="notes-toggle" class="btn edit-btn">Notes</label>
         </div>
 
         {% if cycle.goals %}
@@ -76,6 +78,37 @@
         {% else %}
             <p>No goals yet. Add your first goal below to start this cycle.</p>
         {% endif %}
+
+        <!-- Daily Notes: only visible when Notes toggle is checked -->
+        <div class="card notes-card">
+            <h3>Daily Notes</h3>
+            <p>Pick a day to add or edit its note.</p>
+
+            <div class="notes-day-list">
+                {% for d in dates %}
+                    <label for="note-popup-{{ loop.index0 }}" class="btn notes-day-btn {% if cycle.daily_notes[loop.index0] %}has-note{% endif %}">
+                        {{ d }}
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- One popup per day, each with its own textarea + save form -->
+        {% for d in dates %}
+            <input type="checkbox" id="note-popup-{{ loop.index0 }}" class="popup-toggle-input">
+            <div class="popup-overlay">
+                <div class="popup-box popup-box-wide">
+                    <p>Note for {{ d }}</p>
+                    <form action="{{ url_for('save_note', day_index=loop.index0) }}" method="post">
+                        <textarea name="note_text" rows="5" placeholder="What happened on {{ d }}? Key wins, challenges, lessons...">{{ cycle.daily_notes[loop.index0] }}</textarea>
+                        <div class="popup-actions">
+                            <button type="submit" class="btn btn-danger">Save</button>
+                            <label for="note-popup-{{ loop.index0 }}" class="btn">Cancel</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
 
         <!-- Add Goal form -->
         <div class="card">

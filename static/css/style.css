@@ -414,6 +414,43 @@ a.day-toggle:focus-visible {
     margin-left: 8px;
 }
 
+/* ---------- Daily Notes toggle (checkbox hack, no JS) ---------- */
+/* Same pattern as the Edit toggle above -- a hidden checkbox + label
+   shows/hides the whole Daily Notes card. */
+
+.notes-toggle-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.notes-card {
+    display: none;
+}
+
+.notes-toggle-input:checked ~ .notes-card {
+    display: block;
+}
+
+.notes-day-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Days that already have a saved note get a teal highlight + dot */
+.notes-day-btn.has-note {
+    border-color: var(--teal);
+    color: var(--teal);
+}
+
+.notes-day-btn.has-note::after {
+    content: "●";
+    font-size: 0.6rem;
+    margin-left: 6px;
+    color: var(--teal);
+}
+
 /* ---------- Confirm Popup (checkbox hack, no JS) ---------- */
 .popup-toggle-input {
     position: absolute;
@@ -508,6 +545,7 @@ small {
     input[type="text"], input[type="date"] { width: 100%; }
     .btn, button[type="submit"] { width: 100%; margin: 4px 0; text-align: center; }
 }
+
 /* ---------- Footer ---------- */
 
 .site-footer {

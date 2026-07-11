@@ -48,6 +48,23 @@
             margin: 4px 0;
         }
 
+        .notes {
+            background: #F5F6FB;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+        }
+
+        .notes h3 {
+            margin: 0 0 8px;
+            font-size: 12pt;
+        }
+
+        .notes p {
+            margin: 4px 0;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -82,7 +99,7 @@
     <h1>{{ cycle.name }}</h1>
     <p class="subtitle">{{ cycle.start_date }} to {{ cycle.end_date }}</p>
 
-    {% if show_reflection and reflection %}
+    {% if show_reflection %}
         {% if reflection.achievement or reflection.improvement or reflection.lesson %}
             <div class="reflection">
                 <h3>Reflection</h3>
@@ -95,6 +112,18 @@
                 {% if reflection.lesson %}
                     <p><strong>Lesson learned:</strong> {{ reflection.lesson }}</p>
                 {% endif %}
+            </div>
+        {% endif %}
+
+        {% set notes = cycle.get('daily_notes', []) %}
+        {% if notes and notes|select|list %}
+            <div class="notes">
+                <h3>Daily Notes</h3>
+                {% for d in dates %}
+                    {% if notes[loop.index0] %}
+                        <p><strong>{{ d }}:</strong> {{ notes[loop.index0] }}</p>
+                    {% endif %}
+                {% endfor %}
             </div>
         {% endif %}
     {% endif %}

@@ -121,6 +121,11 @@ def dashboard():
     dates = get_cycle_dates(cycle["start_date"], cycle["end_date"])
     goal_progress, cycle_percent = compute_progress(cycle)
 
+    # Older cycles won't have this key yet -- default to one empty
+    # note per day so the template always has something to loop over
+    if "daily_notes" not in cycle:
+        cycle["daily_notes"] = [""] * len(dates)
+
     return render_template(
         "dashboard.html",
         cycle=cycle,
@@ -179,6 +184,22 @@ def toggle(goal_id, day_index):
             break
 
     save_json(CURRENT_CYCLE_FILE, cycle)
+    return redirect(url_for("dashboard"))
+
+@app.route("/save_note/<int:day_index>", methods=["POST"])
+def save_note(day_index):
+    note_text = request.form.get("note_text", "").strip()
+
+    cycle = load_json(CURRENT_CYCLE_FILE)
+
+    # Same safety default as dashboard(), in case this is the first
+    # note ever saved for this cycle
+    if "daily_notes" not in cycle:
+        cycle["daily_notes"] = [""] * cycle_length(cycle)
+
+    cycle["daily_notes"][day_index] = note_text
+    save_json(CURRENT_CYCLE_FILE, cycle)
+
     return redirect(url_for("dashboard"))
 
 
@@ -296,6 +317,11 @@ def end_cycle():
     # Archive the current cycle, then clear it -- used when a cycle is DONE
     cycle = load_json(CURRENT_CYCLE_FILE)
     cycle["id"] = cycle["name"]
+
+    # Same safety default used elsewhere -- if notes were never opened,
+    # make sure the key still exists before archiving
+    if "daily_notes" not in cycle:
+        cycle["daily_notes"] = [""] * cycle_length(cycle)
 
     # Reflection answers are optional -- store whatever was filled in,
     # blank string if the user skipped a question
