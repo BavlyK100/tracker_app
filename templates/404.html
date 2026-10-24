@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Page not found · Goal Tracker{% endblock %}
+{% block content %}
+<section class="card empty-state" aria-labelledby="not-found-title">
+    <span class="empty-mark" aria-hidden="true">↗</span>
+    <p class="eyebrow">404 · PAGE NOT FOUND</p>
+    <h1 id="not-found-title">A little off the path.</h1>
+    <p>We couldn’t find this page. The link may have changed, or the address may have a typo. Let’s get you back home.</p>
+    <a class="btn btn-primary" href="{{ url_for('welcome') }}">Back to Home <span aria-hidden="true">&nbsp; ↗</span></a>
+</section>
+{% endblock %}

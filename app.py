@@ -4,11 +4,18 @@
 from flask import Flask, render_template, redirect, url_for, request, make_response
 import json
 import os
+from calendar import monthrange
 from datetime import date, timedelta
 from weasyprint import HTML
 from flask import Response
 
 app = Flask(__name__)
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("404.html"), 404
+
 
 DATA_DIR = "data"
 CURRENT_CYCLE_FILE = os.path.join(DATA_DIR, "current_cycle.json")
@@ -111,6 +118,10 @@ def compute_progress(cycle):
 
 
 @app.route("/")
+def welcome():
+    return render_template("welcome.html", has_cycle=bool(load_json(CURRENT_CYCLE_FILE)))
+
+
 @app.route("/dashboard")
 def dashboard():
     cycle = load_json(CURRENT_CYCLE_FILE)
@@ -138,11 +149,26 @@ def dashboard():
 @app.route("/new_cycle", methods=["GET", "POST"])
 def new_cycle():
     error = None
+    today = date.today()
+    next_year = today.year + (today.month == 12)
+    next_month = today.month % 12 + 1
+    month_end = date(next_year, next_month, min(today.day, monthrange(next_year, next_month)[1])) - timedelta(days=1)
+    presets = [
+        ("1week", "1 week", today + timedelta(days=6)),
+        ("2weeks", "2 weeks", today + timedelta(days=13)),
+        ("3weeks", "3 weeks", today + timedelta(days=20)),
+        ("month", "1 month", month_end),
+    ]
+    duration = request.form.get("duration", "custom")
 
     if request.method == "POST":
         name = request.form.get("name", "").strip()
         start_date_str = request.form.get("start_date", "")
         end_date_str = request.form.get("end_date", "")
+        preset_end = next((end for key, label, end in presets if key == duration), None)
+        if preset_end:
+            start_date_str = today.isoformat()
+            end_date_str = preset_end.isoformat()
 
         if not name:
             error = "Please enter a name for this cycle."
@@ -171,7 +197,7 @@ def new_cycle():
                     save_json(CURRENT_CYCLE_FILE, new_cycle_data)
                     return redirect(url_for("dashboard"))
 
-    return render_template("new_cycle.html", error=error)
+    return render_template("new_cycle.html", error=error, today=today, presets=presets, duration=duration)
 
 
 @app.route("/toggle/<goal_id>/<int:day_index>")

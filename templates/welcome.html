@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Welcome · Goal Tracker{% endblock %}
+{% block content %}
+<section class="welcome-hero" aria-labelledby="welcome-title">
+    <div class="welcome-copy">
+        <p class="eyebrow">A LITTLE INTENTION GOES A LONG WAY</p>
+        <h1 id="welcome-title">Good habits.<br>One day <em>at a time.</em></h1>
+        <p class="welcome-intro">A quiet space to focus on what matters. Set a few goals, check in each day, and watch small efforts become something meaningful.</p>
+        <div class="welcome-actions">
+            {% if has_cycle %}
+                <a class="btn btn-primary" href="{{ url_for('dashboard') }}">Continue your cycle <span aria-hidden="true">↗</span></a>
+            {% else %}
+                <a class="btn btn-primary" href="{{ url_for('new_cycle') }}">Start your first cycle <span aria-hidden="true">↗</span></a>
+            {% endif %}
+            <a class="welcome-secondary" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="welcome-note">Your pace. Your goals. Room to grow.</p>
+    </div>
+    <aside class="habit-preview" aria-label="Illustrative habit tracker preview">
+        <div class="preview-top"><span class="eyebrow">THE EVERYDAY EDIT</span><span class="preview-example">Example cycle</span></div>
+        <h2>More of what matters.</h2>
+        <p>A few small promises to yourself.</p>
+        <div class="preview-grid" aria-hidden="true">
+            <span></span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span>
+            <strong>Read a little</strong><b>✓</b><b>✓</b><i></i><b>✓</b><i></i>
+            <strong>Get outside</strong><b>✓</b><i></i><b>✓</b><b>✓</b><i></i>
+            <strong>Make time to pause</strong><i></i><b>✓</b><b>✓</b><i></i><i></i>
+        </div>
+        <p class="sr-only">Example habits: read a little, get outside, and make time to pause, with a mix of completed and incomplete days.</p>
+        <div class="preview-reflection"><span aria-hidden="true">✎</span><p>Progress is showing up again.<br><strong>Every check-in counts.</strong></p></div>
+    </aside>
+</section>
+<section class="welcome-process" id="how-it-works" aria-labelledby="process-title">
+    <div class="welcome-section-heading"><p class="eyebrow">SIMPLE BY DESIGN</p><h2 id="process-title">A rhythm you can make your own.</h2></div>
+    <ol class="process-steps">
+        <li><span class="step-number" aria-hidden="true">01</span><h3>Choose your focus.</h3><p>Name your cycle, pick your dates, and add the habits you want to nurture.</p></li>
+        <li><span class="step-number" aria-hidden="true">02</span><h3>Show up, day by day.</h3><p>Check off your goals, follow your streaks, and leave a note about your day.</p></li>
+        <li><span class="step-number" aria-hidden="true">03</span><h3>Look back. Move forward.</h3><p>Reflect on what you learned, save your cycle, and carry those lessons into the next.</p></li>
+    </ol>
+</section>
+<section class="welcome-closing" aria-labelledby="closing-title"><div><p class="eyebrow">BEGIN WHERE YOU ARE</p><h2 id="closing-title">You don’t need a perfect day.<br>Just a place to start.</h2></div><a class="btn" href="{{ url_for('dashboard') if has_cycle else url_for('new_cycle') }}">{{ 'Back to your goals' if has_cycle else 'Make a little progress' }} <span aria-hidden="true">↗</span></a></section>
+{% endblock %}

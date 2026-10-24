@@ -6,26 +6,39 @@
 
 {% block content %}
 
-    <h1>Start a New Cycle</h1>
+    <div class="page-heading"><p class="eyebrow">MAKE AN INTENTION</p><h1>Start a new cycle.</h1><p>A focused timeframe. A few meaningful goals. A fresh beginning.</p></div><div class="card form-card">
 
     {% if error %}
-        <p style="color: red;">{{ error }}</p>
+        <p class="form-error" role="alert">{{ error }}</p>
     {% endif %}
 
     <form action="{{ url_for('new_cycle') }}" method="post">
         <p>
             <label for="name">Cycle name:</label><br>
-            <input type="text" id="name" name="name" placeholder="e.g. Summer Reading Push" required>
+            <input type="text" id="name" name="name" value="{{ request.form.get('name', '') }}" placeholder="e.g. Summer Reading Push" required>
         </p>
+        <fieldset class="duration-picker">
+            <legend>Choose your timeframe</legend>
+            <p class="duration-help">Quick options start today, {{ today.strftime('%b %d, %Y') }}. Today counts as day one.</p>
+            <div class="duration-options">
+                {% for key, label, end in presets %}
+                <label class="duration-option"><input type="radio" name="duration" value="{{ key }}" {% if duration == key %}checked{% endif %}><span><strong>{{ label }}</strong><small>{{ today.strftime('%b %d') }} – {{ end.strftime('%b %d, %Y') }}</small></span></label>
+                {% endfor %}
+                <label class="duration-option"><input type="radio" name="duration" value="custom" {% if duration == 'custom' %}checked{% endif %}><span><strong>Custom dates</strong><small>Pick your own start and end</small></span></label>
+            </div>
+        </fieldset>
+        <div class="custom-dates">
         <p>
             <label for="start_date">Start date:</label><br>
-            <input type="date" id="start_date" name="start_date" required>
+            <input type="date" id="start_date" name="start_date" value="{{ request.form.get('start_date', today.isoformat()) }}">
         </p>
         <p>
             <label for="end_date">End date:</label><br>
-            <input type="date" id="end_date" name="end_date" required>
+            <input type="date" id="end_date" name="end_date" value="{{ request.form.get('end_date', '') }}">
         </p>
+        </div>
         <button type="submit">Start Cycle</button>
     </form>
+    </div>
 
 {% endblock %}

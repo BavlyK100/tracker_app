@@ -5,16 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Bavly Kamel">
-    <title>10-Day Goal Tracker</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <meta name="description" content="Build meaningful habits with focused cycles, daily check-ins, and space to reflect.">
+    <title>{% block title %}Goal Tracker{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="{{ 'light-theme' if theme == 'light' else '' }}">
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
-        <nav class="main-nav">
+        <nav class="main-nav" aria-label="Main navigation">
+            <a class="brand" href="{{ url_for('welcome') }}"><span class="brand-mark" aria-hidden="true">✓</span><span>Goal Tracker<small>A little progress, every day.</small></span></a>
             <div class="nav-links">
-                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
-                <a href="{{ url_for('saved') }}" class="nav-link">Saved Cycles</a>
+                <a href="{{ url_for('welcome') }}" class="nav-link {{ 'is-active' if request.endpoint == 'welcome' else '' }}" {% if request.endpoint == 'welcome' %}aria-current="page"{% endif %}>Home</a>
+                <a href="{{ url_for('dashboard') }}" class="nav-link {{ 'is-active' if request.endpoint == 'dashboard' else '' }}">Dashboard</a>
+                <a href="{{ url_for('saved') }}" class="nav-link {{ 'is-active' if request.endpoint in ['saved', 'cycle_detail'] else '' }}">Saved Cycles</a>
             </div>
 
             <a href="{{ url_for('toggle_theme') }}" class="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
@@ -32,7 +35,7 @@
         </nav>
     </header>
 
-    <main class="page">
+    <main class="page" id="main-content">
         {% block content %}{% endblock %}
     </main>
 

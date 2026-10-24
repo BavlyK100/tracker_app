@@ -64,7 +64,7 @@
             </div>
         {% endif %}
 
-        <table class="goal-table">
+        <div class="table-scroll"><table class="goal-table">
             <tr>
                 <th>Goal</th>
                 {% for d in dates %}
@@ -82,7 +82,7 @@
                 {% endfor %}
             </tr>
             {% endfor %}
-        </table>
+        </table></div>
 
         <br>
         <a href="{{ url_for('saved') }}" class="btn">Back to Saved Cycles</a>

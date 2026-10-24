@@ -3,15 +3,18 @@
 
 {% block content %}
 
+    <div class="page-heading"><p class="eyebrow">YOUR DAILY PRACTICE</p><h1>Small steps. Lasting change.</h1><p>Make room for the habits that matter to you.</p></div>
+
+    {% if cycle %}
     <!-- Hidden checkbox drives the global Edit toggle via CSS only -->
     <input type="checkbox" id="edit-toggle" class="edit-toggle-input">
     <input type="checkbox" id="notes-toggle" class="notes-toggle-input">
 
-    {% if cycle %}
-        <div class="card">
-            <h1>{{ cycle.name }}</h1>
+        <div class="card cycle-overview">
+            <p class="eyebrow status-dot">ACTIVE CYCLE</p><h2>{{ cycle.name }}</h2>
             <p>{{ cycle.start_date }} to {{ cycle.end_date }}</p>
 
+            <div class="cycle-meta"><span>{{ cycle.goals|length }} goals</span><span>{{ dates|length }} days of possibility</span></div>
             <!-- Overall cycle progress -->
             <div class="progress-bar">
                 <div class="progress-bar-fill" style="width: {{ cycle_percent }}%;"></div>
@@ -40,7 +43,7 @@
                     {% for day_value in goal.days %}
                         <td>
                             <a href="{{ url_for('toggle', goal_id=goal.id, day_index=loop.index0) }}"
-                               class="day-toggle {% if day_value %}is-checked{% endif %}"></a>
+                               class="day-toggle {% if day_value %}is-checked{% endif %}" aria-label="{{ goal.name }}: {{ dates[loop.index0] }}, {{ 'completed; mark incomplete' if day_value else 'incomplete; mark complete' }}"></a>
                         </td>
                     {% endfor %}
                     <td>
@@ -112,9 +115,9 @@
 
         <!-- Add Goal form -->
         <div class="card">
-            <h3>Add a Goal</h3>
+            <h2 class="section-title">Build your next habit</h2><p>Choose something small enough to show up for every day.</p>
             <form action="{{ url_for('add_goal') }}" method="post">
-                <input type="text" name="goal_name" placeholder="e.g. Read" required>
+                <label class="sr-only" for="goal-name">Goal name</label><input type="text" id="goal-name" name="goal_name" placeholder="e.g. Read for 20 minutes" required>
                 <button type="submit" class="btn">Add Goal</button>
             </form>
         </div>
@@ -157,10 +160,9 @@
         <label for="cancel-cycle-popup" class="btn">Cancel Cycle (Discard)</label>
 
     {% else %}
-        <div class="card">
-            <h1>No Cycle Running</h1>
-            <p>Start a new cycle to begin tracking goals.</p>
-            <a href="{{ url_for('new_cycle') }}" class="btn">Start New Cycle</a>
+        <div class="card empty-state"><span class="empty-mark" aria-hidden="true">↗</span><p class="eyebrow">A FRESH START</p><h2>Your next chapter starts here.</h2>
+            <p>Give your goals a little structure. Choose a timeframe, add your habits, and build momentum one day at a time.</p>
+            <a href="{{ url_for('new_cycle') }}" class="btn btn-primary">Start a new cycle &nbsp; ↗</a>
         </div>
     {% endif %}
 
